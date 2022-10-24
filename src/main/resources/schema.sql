@@ -7,6 +7,12 @@ CREATE TABLE IF NOT EXISTS student (
 );
 
 CREATE TABLE IF NOT EXISTS professor (
-                                       id SERIAL PRIMARY KEY,
-                                       name TEXT NOT NULL
+                                         id SERIAL PRIMARY KEY,
+                                         name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS relation (
+                                         id SERIAL PRIMARY KEY,
+                                         student_id INTEGER,
+                                         professor_id INTEGER
 );

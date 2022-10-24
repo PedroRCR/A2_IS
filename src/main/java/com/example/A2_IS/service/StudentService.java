@@ -26,7 +26,7 @@ public class StudentService {
     }
 
     public void deleteStudent(Integer id) {
-        studentRepository.deleteById(id).switchIfEmpty(Mono.error(new Exception("Student not found")));
+        studentRepository.deleteById(id).switchIfEmpty(Mono.error(new Exception("Student not found"))).subscribe();
     }
 
     public void updateStudent(Student student) {

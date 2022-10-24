@@ -19,8 +19,8 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
-    public void saveProfessor(Professor professor) {
-        professorRepository.save(professor).subscribe();
+    public Mono<Professor> saveProfessor(Professor professor) {
+       return professorRepository.save(professor);
     }
 
     public void deleteProfessor(Integer id) {
