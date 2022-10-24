@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 
-public interface StudentRepository extends R2dbcRepository<Student, Integer> {
+public interface StudentRepository extends ReactiveCrudRepository<Student, Integer> {
 }
