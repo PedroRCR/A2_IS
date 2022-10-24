@@ -24,7 +24,7 @@ public class ProfessorService {
     }
 
     public void deleteProfessor(Integer id) {
-        professorRepository.deleteById(id).switchIfEmpty(Mono.error(new Exception("Professor not found")));
+        professorRepository.deleteById(id).switchIfEmpty(Mono.error(new Exception("Professor not found"))).subscribe();
     }
 
     public void updateProfessor(Professor professor) {
