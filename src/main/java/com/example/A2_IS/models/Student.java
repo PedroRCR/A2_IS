@@ -24,5 +24,6 @@ public class Student {
     private Integer credits;
     private Float avarage;
 
-//    Completed	credits	(between	0	and	180).
+
+    //    Completed	credits	(between	0	and	180).
 }

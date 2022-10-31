@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
+
 @RestController
 @RequestMapping("/a2/student")
 @RequiredArgsConstructor
@@ -31,4 +33,13 @@ public class StudentController {
 
     @PutMapping
     public void updateStudent(@RequestBody Student student){studentService.updateStudent(student);}
+
+    @GetMapping("/sortedStudents")
+    public Flux<Student> getStudentsByGraduationNotes(){
+        return studentService.getStudents()
+                .sort(Comparator.comparing(
+                                Student::getCredits
+                        )
+                );
+    }
 }

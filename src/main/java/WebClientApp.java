@@ -9,10 +9,17 @@ import java.util.concurrent.Future;
 public class WebClientApp {
     public static void main(String[] args) throws InterruptedException, IOException, FileNotFoundException {
         req1();
+        Thread.sleep(1500);
         req2();
+        Thread.sleep(1500);
         req3();
+        Thread.sleep(1500);
         req4();
+        Thread.sleep(1500);
+        req5();
+        Thread.sleep(1500);
         req6();
+        Thread.sleep(1500);
     }
 
     public static void req1() {
@@ -78,7 +85,7 @@ public class WebClientApp {
             WebClient client = WebClient.create("http://localhost:8080");
             PrintStream o = new PrintStream("Students.req4.txt");
 
-            var completedCourses = client.get()
+            client.get()
                     .uri("/a2/student")
                     .retrieve()
                     .bodyToFlux(Student.class)
@@ -91,8 +98,27 @@ public class WebClientApp {
             System.out.println("REQ4 FUNCTION ERROR");
             e.printStackTrace();
         }
+
     }
 
+    public static void req5(){
+        try{
+        WebClient client = WebClient.create("http://localhost:8080");
+        PrintStream o = new PrintStream("Students.req5.txt");
+        client.get()
+                .uri("/a2/student/sortedStudents")
+                .retrieve()
+                .bodyToFlux(Student.class)
+                .subscribe(student -> {
+                    if (student.getCredits() > 120 && student.getCredits() < 180)
+                    o.println("Student name: " + student.getName() + " -- credits: " + student.getCredits());
+                });
+
+        } catch (Exception e) {
+            System.out.println("REQ5 FUNCTION ERROR");
+            e.printStackTrace();
+        }
+    }
 
 
     public static void req6() {
@@ -112,4 +138,5 @@ public class WebClientApp {
             e.printStackTrace();
         }
     }
+
 }
