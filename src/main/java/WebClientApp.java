@@ -1,5 +1,7 @@
 import com.example.A2_IS.models.Student;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+
 import java.io.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -21,6 +23,8 @@ public class WebClientApp {
         req5();
         Thread.sleep(1500);
         req6();
+        Thread.sleep(1500);
+        req7();
         Thread.sleep(1500);
         req8();
         Thread.sleep(1500);
@@ -125,29 +129,33 @@ public class WebClientApp {
         try {
             PrintStream o = new PrintStream("Students.req6.txt");
 
-            var studentGrades = client.get()
+            var students = client.get()
                     .uri("/a2/student")
                     .retrieve()
-                    .bodyToFlux(Student.class)
-                    .map(Student::getAvarage)
-                    .collectList().block();
+                    .bodyToFlux(Student.class);
 
-
-            var count = studentGrades.stream().count();
-            var avgGrade = studentGrades.stream().reduce(Float::sum).get() / count;
-            var standardDeviation = Math.sqrt(
-                    studentGrades.stream().map(grade -> grade-avgGrade).reduce(Float::sum).get() / count
-            );
-            var averageDeviation = (1d/count) * studentGrades.stream().map(grade -> Math.abs(grade-avgGrade)).reduce(Float::sum).get();
-
-            o.printf("standardDeviation: %f\n", standardDeviation);
-            o.printf("averageDeviation: %f\n", averageDeviation);
+            reqStandardAndAverageDeviation(students, o);
         } catch (Exception e) {
             System.out.println("REQ6 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
 
+    public static void req7() {
+        try {
+            PrintStream o = new PrintStream("Students.req7.txt");
+
+            var students = client.get()
+                    .uri("/a2/student")
+                    .retrieve()
+                    .bodyToFlux(Student.class)
+                    .filter(student -> student.getCredits() >= 180);
+
+            reqStandardAndAverageDeviation(students, o);
+        } catch (Exception e) {
+            System.out.println("REQ7 FUNCTION ERROR");
+        }
+    }
     public static void req8(){
         try{
             WebClient client = WebClient.create("http://localhost:8080");
@@ -163,6 +171,23 @@ public class WebClientApp {
             System.out.println("REQ8 FUNCTION ERROR");
             e.printStackTrace();
         }
+    }
+
+
+    public static void reqStandardAndAverageDeviation(Flux<Student> students, PrintStream o) {
+        var studentGrades = students
+                .map(Student::getAvarage)
+                .collectList().block();
+
+        var count = studentGrades.stream().count();
+        var avgGrade = studentGrades.stream().reduce(Float::sum).get() / count;
+        var standardDeviation = Math.sqrt(
+                studentGrades.stream().map(grade -> grade-avgGrade).reduce(Float::sum).get() / count
+        );
+        var averageDeviation = (1d/count) * studentGrades.stream().map(grade -> Math.abs(grade-avgGrade)).reduce(Float::sum).get();
+
+        o.printf("standardDeviation: %f\n", standardDeviation);
+        o.printf("averageDeviation: %f\n", averageDeviation);
     }
 
 }
