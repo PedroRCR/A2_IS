@@ -8,16 +8,11 @@ import java.util.concurrent.Future;
 
 public class WebClientApp {
     public static void main(String[] args) throws InterruptedException, IOException, FileNotFoundException {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-
-        executorService.submit(WebClientApp::req1);
-        executorService.submit(WebClientApp::req2);
-        executorService.submit(WebClientApp::req3);
-        executorService.submit(WebClientApp::req4);
-        executorService.submit(WebClientApp::req6);
-
-        Thread.sleep(2000);
-        executorService.shutdown();
+        req1();
+        req2();
+        req3();
+        req4();
+        req6();
     }
 
     public static void req1() {
