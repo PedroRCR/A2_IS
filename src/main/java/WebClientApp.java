@@ -9,8 +9,6 @@ import java.util.concurrent.Future;
 public class WebClientApp {
     public static void main(String[] args) throws InterruptedException, IOException, FileNotFoundException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-        PrintStream o = new PrintStream("Students.txt");
-        System.setOut(o);
 
         executorService.submit(WebClientApp::req1);
         executorService.submit(WebClientApp::req2);
@@ -18,7 +16,7 @@ public class WebClientApp {
         executorService.submit(WebClientApp::req4);
         executorService.submit(WebClientApp::req6);
 
-        Thread.sleep(1500);
+        Thread.sleep(2000);
         executorService.shutdown();
     }
 
