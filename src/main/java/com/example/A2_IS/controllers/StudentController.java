@@ -34,11 +34,20 @@ public class StudentController {
     @PutMapping
     public void updateStudent(@RequestBody Student student){studentService.updateStudent(student);}
 
-    @GetMapping("/sortedStudents")
+    @GetMapping("/sortedStudentsByCredits")
     public Flux<Student> getStudentsByGraduationNotes(){
         return studentService.getStudents()
                 .sort(Comparator.comparing(
                                 Student::getCredits
+                        )
+                );
+    }
+
+    @GetMapping("/sortedStudentsByAge")
+    public Flux<Student> getStudentsByAge(){
+        return studentService.getStudents()
+                .sort(Comparator.comparing(
+                                Student::getDob
                         )
                 );
     }

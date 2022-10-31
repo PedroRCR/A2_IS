@@ -22,6 +22,8 @@ public class WebClientApp {
         Thread.sleep(1500);
         req6();
         Thread.sleep(1500);
+        req8();
+        Thread.sleep(1500);
     }
 
     public static void req1() {
@@ -101,16 +103,16 @@ public class WebClientApp {
 
     public static void req5(){
         try{
-        WebClient client = WebClient.create("http://localhost:8080");
-        PrintStream o = new PrintStream("Students.req5.txt");
-        client.get()
-                .uri("/a2/student/sortedStudents")
-                .retrieve()
-                .bodyToFlux(Student.class)
-                .subscribe(student -> {
-                    if (student.getCredits() > 120 && student.getCredits() < 180)
-                    o.println("Student name: " + student.getName() + " -- credits: " + student.getCredits());
-                });
+            WebClient client = WebClient.create("http://localhost:8080");
+            PrintStream o = new PrintStream("Students.req5.txt");
+            client.get()
+                    .uri("/a2/student/sortedStudentsByCredits")
+                    .retrieve()
+                    .bodyToFlux(Student.class)
+                    .subscribe(student -> {
+                        if (student.getCredits() > 120 && student.getCredits() < 180)
+                            o.println("Student name: " + student.getName() + " -- credits: " + student.getCredits());
+                    });
 
         } catch (Exception e) {
             System.out.println("REQ5 FUNCTION ERROR");
@@ -134,7 +136,7 @@ public class WebClientApp {
             var count = studentGrades.stream().count();
             var avgGrade = studentGrades.stream().reduce(Float::sum).get() / count;
             var standardDeviation = Math.sqrt(
-              studentGrades.stream().map(grade -> grade-avgGrade).reduce(Float::sum).get() / count
+                    studentGrades.stream().map(grade -> grade-avgGrade).reduce(Float::sum).get() / count
             );
             var averageDeviation = (1d/count) * studentGrades.stream().map(grade -> Math.abs(grade-avgGrade)).reduce(Float::sum).get();
 
@@ -142,6 +144,23 @@ public class WebClientApp {
             o.printf("averageDeviation: %f\n", averageDeviation);
         } catch (Exception e) {
             System.out.println("REQ6 FUNCTION ERROR");
+            e.printStackTrace();
+        }
+    }
+
+    public static void req8(){
+        try{
+            WebClient client = WebClient.create("http://localhost:8080");
+            PrintStream o = new PrintStream("Students.req8.txt");
+            client.get()
+                    .uri("/a2/student/sortedStudentsByAge")
+                    .retrieve()
+                    .bodyToFlux(Student.class).take(1)
+                    .subscribe(
+                            student -> o.println(student.getName() + " ---- " + student.getDob())
+                    );
+        } catch (Exception e) {
+            System.out.println("REQ8 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
