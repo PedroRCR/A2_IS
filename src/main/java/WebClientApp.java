@@ -110,7 +110,10 @@ public class WebClientApp {
             var standardDeviation = Math.sqrt(
               studentGrades.stream().map(grade -> grade-avgGrade).reduce(Float::sum).get() / count
             );
-            System.out.println("standardDeviation: "+standardDeviation);
+            var averageDeviation = (1d/count) * studentGrades.stream().map(grade -> Math.abs(grade-avgGrade)).reduce(Float::sum).get();
+
+            o.printf("standardDeviation: %f\n", standardDeviation);
+            o.printf("averageDeviation: %f\n", averageDeviation);
         } catch (Exception e) {
             System.out.println("REQ6 FUNCTION ERROR");
             e.printStackTrace();
