@@ -68,8 +68,16 @@ public class WebClientApp {
                 .retrieve()
                 .bodyToFlux(Student.class)
                 .subscribe(student -> {
-                    int completedCouses = student.getCredits() % 6;
+                    int completedCouses = student.getCredits() / 6;
+
+                    try {
+                        writer.write("\nName of the student: " + student.getName() + " number of completed couses: " + completedCouses);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
+
+        Thread.sleep(1500);
 
         writer.close();
 
