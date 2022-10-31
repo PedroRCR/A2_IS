@@ -1,11 +1,14 @@
 import com.example.A2_IS.models.Student;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.io.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class WebClientApp {
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException, ExecutionException {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
 //            File f = new File("filename.txt");
 //        try {
 //            if (f.createNewFile()) {
@@ -20,10 +23,13 @@ public class WebClientApp {
         PrintStream o = new PrintStream("Students.txt");
         System.setOut(o);
 
-        req1();
-        req2();
-        req3();
-        req4();
+        Future<?> future1 = executorService.submit(WebClientApp::req1);
+        Future<?> future2 = executorService.submit(WebClientApp::req2);
+        Future<?> future3 = executorService.submit(WebClientApp::req3);
+        Future<?> future4 = executorService.submit(WebClientApp::req4);
+
+        Thread.sleep(1500);
+        executorService.shutdown();
     }
 
     public static void req1() {
@@ -37,11 +43,6 @@ public class WebClientApp {
                     System.out.println("\nName: " + student.getName() + "\t Date of Birth: " + student.getDob());
                     System.out.println(student.getName());
                 });
-
-        try {
-            Thread.sleep(1500);
-        } catch (Exception e) {
-        }
     }
 
     public static void req2() {
@@ -55,11 +56,6 @@ public class WebClientApp {
                 .block();
 
         System.out.println("\nTotal of Students: " + totalOfStudents);
-
-        try {
-            Thread.sleep(1500);
-        } catch (Exception e) {
-        }
     }
 
     public static void req3() {
@@ -74,11 +70,6 @@ public class WebClientApp {
                 .block();
 
         System.out.println("\nTotal number of students that are active: " + totalOfActiveStudents);
-
-        try {
-            Thread.sleep(1500);
-        } catch (Exception e) {
-        }
     }
 
     public static void req4() {
@@ -93,10 +84,5 @@ public class WebClientApp {
 
                     System.out.println("\nName of the student: " + student.getName() + " number of completed couses: " + completedCouses);
                 });
-
-        try {
-            Thread.sleep(1500);
-        } catch (Exception e) {
-        }
     }
 }
