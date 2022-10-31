@@ -1,15 +1,11 @@
 import com.example.A2_IS.models.Student;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WebClientApp {
     public static void main(String[] args) throws InterruptedException, IOException {
-        WebClient client = WebClient.create("http://localhost:8080");
-
 //            File f = new File("filename.txt");
 //        try {
 //            if (f.createNewFile()) {
@@ -21,24 +17,35 @@ public class WebClientApp {
 //            System.out.println("An error occurred.");
 //            e.printStackTrace();
 //        }
+        PrintStream o = new PrintStream("Students.txt");
+        System.setOut(o);
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter("Students.txt",true));
+        req1();
+        req2();
+        req3();
+        req4();
+    }
+
+    public static void req1() {
+        WebClient client = WebClient.create("http://localhost:8080");
 
         var headersSpec = client.get()
                 .uri("/a2/student")
                 .retrieve()
                 .bodyToFlux(Student.class)
                 .subscribe(student -> {
-                    try {
-                        writer.append("\nName: " + student.getName() + "\t Date of Birth: " + student.getDob());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    System.out.println("\nName: " + student.getName() + "\t Date of Birth: " + student.getDob());
                     System.out.println(student.getName());
                 });
 
-        Thread.sleep(1500);
+        try {
+            Thread.sleep(1500);
+        } catch (Exception e) {
+        }
+    }
 
+    public static void req2() {
+        WebClient client = WebClient.create("http://localhost:8080");
 
         var totalOfStudents = client.get()
                 .uri("/a2/student")
@@ -47,9 +54,16 @@ public class WebClientApp {
                 .count()
                 .block();
 
-        writer.write("\nTotal of Students: " + totalOfStudents);
+        System.out.println("\nTotal of Students: " + totalOfStudents);
 
-        Thread.sleep(1500);
+        try {
+            Thread.sleep(1500);
+        } catch (Exception e) {
+        }
+    }
+
+    public static void req3() {
+        WebClient client = WebClient.create("http://localhost:8080");
 
         var totalOfActiveStudents = client.get()
                 .uri("/a2/student")
@@ -59,9 +73,16 @@ public class WebClientApp {
                 .count()
                 .block();
 
-        writer.write("\nTotal number of students that are active: " + totalOfActiveStudents);
+        System.out.println("\nTotal number of students that are active: " + totalOfActiveStudents);
 
-        Thread.sleep(1500);
+        try {
+            Thread.sleep(1500);
+        } catch (Exception e) {
+        }
+    }
+
+    public static void req4() {
+        WebClient client = WebClient.create("http://localhost:8080");
 
         var completedCourses = client.get()
                 .uri("/a2/student")
@@ -70,16 +91,12 @@ public class WebClientApp {
                 .subscribe(student -> {
                     int completedCouses = student.getCredits() / 6;
 
-                    try {
-                        writer.write("\nName of the student: " + student.getName() + " number of completed couses: " + completedCouses);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    System.out.println("\nName of the student: " + student.getName() + " number of completed couses: " + completedCouses);
                 });
 
-        Thread.sleep(1500);
-
-        writer.close();
-
+        try {
+            Thread.sleep(1500);
+        } catch (Exception e) {
+        }
     }
 }
