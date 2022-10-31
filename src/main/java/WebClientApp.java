@@ -34,7 +34,7 @@ public class WebClientApp {
                         o.println(student.getName());
                     });
         } catch (Exception e) {
-            System.out.println("REQ6 FUNCTION ERROR");
+            System.out.println("REQ1 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
@@ -53,7 +53,7 @@ public class WebClientApp {
 
             o.println("\nTotal of Students: " + totalOfStudents);
         } catch (Exception e) {
-            System.out.println("REQ6 FUNCTION ERROR");
+            System.out.println("REQ2 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
@@ -73,7 +73,7 @@ public class WebClientApp {
 
             o.println("\nTotal number of students that are active: " + totalOfActiveStudents);
         } catch (Exception e) {
-            System.out.println("REQ6 FUNCTION ERROR");
+            System.out.println("REQ3 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
@@ -93,10 +93,12 @@ public class WebClientApp {
                         o.println("\nName of the student: " + student.getName() + " number of completed couses: " + completedCouses);
                     });
         } catch (Exception e) {
-            System.out.println("REQ6 FUNCTION ERROR");
+            System.out.println("REQ4 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
+
+
 
     public static void req6() {
         try {
