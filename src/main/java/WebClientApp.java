@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class WebClientApp {
+    static WebClient client = WebClient.create("http://localhost:8080");
+
     public static void main(String[] args) throws InterruptedException, IOException, FileNotFoundException {
         req1();
         req2();
@@ -17,7 +19,6 @@ public class WebClientApp {
 
     public static void req1() {
         try {
-            WebClient client = WebClient.create("http://localhost:8080");
             PrintStream o = new PrintStream("Students.req1.txt");
 
             var headersSpec = client.get()
@@ -36,7 +37,6 @@ public class WebClientApp {
 
     public static void req2() {
         try {
-            WebClient client = WebClient.create("http://localhost:8080");
             PrintStream o = new PrintStream("Students.req2.txt");
 
             var totalOfStudents = client.get()
@@ -55,7 +55,6 @@ public class WebClientApp {
 
     public static void req3() {
         try {
-            WebClient client = WebClient.create("http://localhost:8080");
             PrintStream o = new PrintStream("Students.req3.txt");
 
             var totalOfActiveStudents = client.get()
@@ -75,7 +74,6 @@ public class WebClientApp {
 
     public static void req4() {
         try {
-            WebClient client = WebClient.create("http://localhost:8080");
             PrintStream o = new PrintStream("Students.req4.txt");
 
             var completedCourses = client.get()
@@ -95,16 +93,22 @@ public class WebClientApp {
 
     public static void req6() {
         try {
-            WebClient client = WebClient.create("http://localhost:8080");
             PrintStream o = new PrintStream("Students.req6.txt");
 
             var studentGrades = client.get()
                     .uri("/a2/student")
                     .retrieve()
                     .bodyToFlux(Student.class)
-                    .map(Student::getAvarage);
+                    .map(Student::getAvarage)
+                    .collectList().block();
 
-            var avgGrade = studentGrades.reduce(Float::sum).block() / studentGrades.count().block();
+
+            var count = studentGrades.stream().count();
+            var avgGrade = studentGrades.stream().reduce(Float::sum).get() / count;
+            var standardDeviation = Math.sqrt(
+              studentGrades.stream().map(grade -> grade-avgGrade).reduce(Float::sum).get() / count
+            );
+            System.out.println("standardDeviation: "+standardDeviation);
         } catch (Exception e) {
             System.out.println("REQ6 FUNCTION ERROR");
             e.printStackTrace();
