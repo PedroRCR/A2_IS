@@ -50,6 +50,8 @@ public class A2IsApplication {
 
 	}
 	@Bean
+
+
 	ConnectionFactoryInitializer initializer(@Qualifier("connectionFactory") ConnectionFactory connectionFactory) {
 		ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
 		initializer.setConnectionFactory(connectionFactory);

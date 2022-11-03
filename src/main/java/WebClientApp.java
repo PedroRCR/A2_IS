@@ -34,13 +34,12 @@ public class WebClientApp {
         try {
             PrintStream o = new PrintStream("Students.req1.txt");
 
-            var headersSpec = client.get()
+            client.get()
                     .uri("/a2/student")
                     .retrieve()
                     .bodyToFlux(Student.class)
                     .subscribe(student -> {
                         o.println("\nName: " + student.getName() + "\t Date of Birth: " + student.getDob());
-                        o.println(student.getName());
                     });
         } catch (Exception e) {
             System.out.println("REQ1 FUNCTION ERROR");
