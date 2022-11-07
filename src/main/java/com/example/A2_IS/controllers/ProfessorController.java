@@ -1,7 +1,6 @@
 package com.example.A2_IS.controllers;
 
 import com.example.A2_IS.models.Professor;
-import com.example.A2_IS.models.Student;
 import com.example.A2_IS.service.ProfessorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +20,9 @@ public class ProfessorController {
 
     @GetMapping
     public Flux<Professor> getAllProfessors(){return professorService.getAllProfessors();}
+
+    @GetMapping("getAllProfessorsWithStudents")
+    public Flux<Professor> getAllProfessorsWithStudents(){return professorService.getAllProfessorsWithStudents();}
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)

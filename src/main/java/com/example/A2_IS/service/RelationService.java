@@ -15,5 +15,7 @@ public class RelationService {
 
     public Flux<Relation> getAllRelation(){return relationRepository.findAll();}
 
+    public Flux<Relation> getAllRelationForProfessor(int professorId){return relationRepository.findByProfessorId(professorId);}
+
     public Mono<Relation> createRelation(Relation relation){return relationRepository.save(relation);}
 }

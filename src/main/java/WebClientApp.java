@@ -1,4 +1,6 @@
+import com.example.A2_IS.models.Professor;
 import com.example.A2_IS.models.Student;
+import org.springframework.data.util.Pair;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
@@ -27,6 +29,8 @@ public class WebClientApp {
         req7();
         Thread.sleep(1500);
         req8();
+        Thread.sleep(1500);
+        req10();
         Thread.sleep(1500);
     }
 
@@ -168,6 +172,23 @@ public class WebClientApp {
                     );
         } catch (Exception e) {
             System.out.println("REQ8 FUNCTION ERROR");
+            e.printStackTrace();
+        }
+    }
+
+    public static void req10(){
+        try{
+            WebClient client = WebClient.create("http://localhost:8080");
+            PrintStream o = new PrintStream("Students.req10.txt");
+            client.get()
+                    .uri("/a2/professor/getAllProfessorsWithStudents")
+                    .retrieve()
+                    .bodyToFlux(Professor.class).take(1)
+                    .subscribe(
+                            professor -> o.println("professor "+professor.getName()+" number of students: "+professor.getStudents().size())
+                    );
+        } catch (Exception e) {
+            System.out.println("REQ10 FUNCTION ERROR");
             e.printStackTrace();
         }
     }

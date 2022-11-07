@@ -19,6 +19,10 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
+    public Mono<Student> getStudentById(int id){
+        return studentRepository.findById(id);
+    }
+
     public Flux<Student> getStudents(){
         return studentRepository.findAll();
     }
