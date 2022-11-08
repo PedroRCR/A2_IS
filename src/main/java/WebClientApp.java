@@ -14,7 +14,7 @@ public class WebClientApp {
 
     public static void main(String[] args) {
 
-        req11();
+        req9();
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -201,6 +201,26 @@ public class WebClientApp {
                     );
         } catch (Exception e) {
             System.out.println("REQ8 FUNCTION ERROR");
+            e.printStackTrace();
+        }
+    }
+
+    public static void req9(){
+        try{
+            WebClient client = WebClient.create("http://localhost:8080");
+            PrintStream o = new PrintStream("Students.req9.txt");
+            client.get()
+                    .uri("/a2/student/getAllStudentsWithProfessors")
+                    .retrieve()
+                    .bodyToFlux(Student.class)
+                    .collectList()
+                    .subscribe(students -> {
+                        var sumOfStudentProfessors = students.stream().map(student -> student.getProfessors().size()).mapToInt(value -> value).sum();
+                        o.println("Average # of professors per student: " + (sumOfStudentProfessors*1d/students.size()));
+                    });
+
+        } catch (Exception e) {
+            System.out.println("REQ10 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
