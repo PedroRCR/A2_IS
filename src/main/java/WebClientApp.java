@@ -6,6 +6,7 @@ import reactor.core.publisher.Flux;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Comparator;
 
 
 public class WebClientApp {
@@ -13,6 +14,13 @@ public class WebClientApp {
 
     public static void main(String[] args) {
 
+        req10();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        /*
         WebClientApp obj = new WebClientApp();
         Class<?> classObj = obj.getClass();
 
@@ -33,6 +41,7 @@ public class WebClientApp {
             };
             t.start();
         }
+        */
 
 //        req1();
 //        Thread.sleep(1500);
@@ -203,9 +212,10 @@ public class WebClientApp {
             client.get()
                     .uri("/a2/professor/getAllProfessorsWithStudents")
                     .retrieve()
-                    .bodyToFlux(Professor.class).take(1)
+                    .bodyToFlux(Professor.class)
+                    .sort(Comparator.comparing(professor -> -professor.getStudents().size()))
                     .subscribe(
-                            professor -> o.println("professor "+professor.getName()+" number of students: "+professor.getStudents().size())
+                            professor -> o.println("Professor "+professor.getName()+"; Number of students: "+professor.getStudents().size())
                     );
         } catch (Exception e) {
             System.out.println("REQ10 FUNCTION ERROR");

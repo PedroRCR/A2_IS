@@ -38,11 +38,9 @@ public class ProfessorService {
     public Mono<Professor> loadRelations(final Professor professor) {
         var relations = relationRepository.findByProfessorId(professor.getId());
 
-        //todo
-        //var students = relations.flatMap(relation ->
-        //        studentRepository.findById(relation.getStudentId())
-        //);
-        var students = studentRepository.findAll();
+        var students = relations.flatMap(relation ->
+                studentRepository.findById(relation.getStudentId())
+        );
 
         // Load the students
         Mono<Professor> mono = Mono.just(professor)
