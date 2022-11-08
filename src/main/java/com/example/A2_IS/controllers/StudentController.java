@@ -26,7 +26,7 @@ public class StudentController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveStudent(@RequestBody Student student){studentService.saveStudent(student);}
+    public Mono<Student> saveStudent(@RequestBody Student student){return studentService.saveStudent(student);}
 
     @DeleteMapping("delete/{id}")
     public void deleteStudent(@PathVariable Integer id){studentService.deleteStudent(id);}

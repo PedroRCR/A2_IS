@@ -5,33 +5,59 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+
+
 public class WebClientApp {
     static WebClient client = WebClient.create("http://localhost:8080");
 
-    public static void main(String[] args) throws InterruptedException, IOException, FileNotFoundException {
-        req1();
-        Thread.sleep(1500);
-        req2();
-        Thread.sleep(1500);
-        req3();
-        Thread.sleep(1500);
-        req4();
-        Thread.sleep(1500);
-        req5();
-        Thread.sleep(1500);
-        req6();
-        Thread.sleep(1500);
-        req7();
-        Thread.sleep(1500);
-        req8();
-        Thread.sleep(1500);
-        req10();
-        Thread.sleep(1500);
+    public static void main(String[] args) {
+
+        WebClientApp obj = new WebClientApp();
+        Class<?> classObj = obj.getClass();
+
+        for (int i = 1; i < 9; i++) {
+            int index = i;
+            Thread t = new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        Method callReq = classObj.getDeclaredMethod("req" + index, null); // GetDeclaredMethodByName
+                        callReq.invoke(obj, null);                                                      //Invokes the method
+                    }
+                    catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e)
+                    {
+                        System.out.println(e.getCause());
+                    }
+                }
+            };
+            t.start();
+        }
+
+//        req1();
+//        Thread.sleep(1500);
+//        req2();
+//        Thread.sleep(1500);
+//        req3();
+//        Thread.sleep(1500);
+//        req4();
+//        Thread.sleep(1500);
+//        req5();
+//        Thread.sleep(1500);
+//        req6();
+//        Thread.sleep(1500);
+//        req7();
+//        Thread.sleep(1500);
+//        req8();
+//        Thread.sleep(1500);
+//        req10();
+//        Thread.sleep(1500);
     }
 
     public static void req1() {

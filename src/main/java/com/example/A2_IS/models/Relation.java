@@ -12,8 +12,7 @@ import org.springframework.data.relational.core.mapping.Column;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Relation {
-    @Id
-    private Integer id;
+
     @Column("student_id")
     private Integer studentId;
     @Column("professor_id")

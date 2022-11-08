@@ -16,3 +16,10 @@ CREATE TABLE IF NOT EXISTS relation (
                                          student_id INTEGER,
                                          professor_id INTEGER
 );
+
+
+
+ALTER TABLE relation DROP CONSTRAINT IF EXISTS relation_fk1;
+ALTER TABLE relation DROP CONSTRAINT IF EXISTS relation_fk2;
+ALTER TABLE  relation  ADD CONSTRAINT  relation_fk1 FOREIGN KEY (student_id) REFERENCES student(id);
+ALTER TABLE  relation  ADD CONSTRAINT  relation_fk2 FOREIGN KEY (professor_id) REFERENCES professor(id);

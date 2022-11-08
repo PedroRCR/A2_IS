@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/a2/professor")
@@ -26,7 +27,7 @@ public class ProfessorController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveProfessor(@RequestBody Professor professor){professorService.saveProfessor(professor);}
+    public Mono<Professor> saveProfessor(@RequestBody Professor professor){return professorService.saveProfessor(professor);}
 
     @DeleteMapping("delete/{id}")
     public void deleteStudent(@PathVariable Integer id){professorService.deleteProfessor(id);}
