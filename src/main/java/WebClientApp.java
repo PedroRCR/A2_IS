@@ -14,7 +14,7 @@ public class WebClientApp {
 
     public static void main(String[] args) {
 
-        req10();
+        req11();
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -216,6 +216,23 @@ public class WebClientApp {
                     .sort(Comparator.comparing(professor -> -professor.getStudents().size()))
                     .subscribe(
                             professor -> o.println("Professor "+professor.getName()+"; Number of students: "+professor.getStudents().size())
+                    );
+        } catch (Exception e) {
+            System.out.println("REQ10 FUNCTION ERROR");
+            e.printStackTrace();
+        }
+    }
+
+    public static void req11(){
+        try{
+            WebClient client = WebClient.create("http://localhost:8080");
+            PrintStream o = new PrintStream("Students.req11.txt");
+            client.get()
+                    .uri("/a2/student/getAllStudentsWithProfessors")
+                    .retrieve()
+                    .bodyToFlux(Student.class)
+                    .subscribe(
+                            student -> o.println(student.toString())
                     );
         } catch (Exception e) {
             System.out.println("REQ10 FUNCTION ERROR");
