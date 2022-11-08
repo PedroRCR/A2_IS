@@ -23,7 +23,7 @@ public class Student {
     private String name;
     private LocalDate dob;
     private Integer credits;
-    private Float avarage;
+    private Float average;
     @Transient
     private List<Professor> professors;
 

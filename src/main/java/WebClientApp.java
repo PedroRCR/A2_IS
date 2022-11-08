@@ -1,17 +1,11 @@
 import com.example.A2_IS.models.Professor;
 import com.example.A2_IS.models.Student;
-import org.springframework.data.util.Pair;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 
 
 public class WebClientApp {
@@ -222,7 +216,7 @@ public class WebClientApp {
 
     public static void reqStandardAndAverageDeviation(Flux<Student> students, PrintStream o) {
         var studentGrades = students
-                .map(Student::getAvarage)
+                .map(Student::getAverage)
                 .collectList().block();
 
         var count = studentGrades.stream().count();

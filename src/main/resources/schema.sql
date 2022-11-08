@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS student (
                                        name TEXT NOT NULL,
                                        dob DATE NOT NULL,
                                        credits INTEGER,
-                                       avarage FLOAT
+                                       average FLOAT
 );
 
 CREATE TABLE IF NOT EXISTS professor (
