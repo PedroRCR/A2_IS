@@ -13,18 +13,10 @@ public class WebClientApp {
     static WebClient client = WebClient.create("http://localhost:8080");
 
     public static void main(String[] args) {
-
-        req9();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        /*
         WebClientApp obj = new WebClientApp();
         Class<?> classObj = obj.getClass();
 
-        for (int i = 1; i < 9; i++) {
+        for (int i = 1; i <= 11; i++) {
             int index = i;
             Thread t = new Thread(){
                 @Override
@@ -41,7 +33,6 @@ public class WebClientApp {
             };
             t.start();
         }
-        */
 
 //        req1();
 //        Thread.sleep(1500);
