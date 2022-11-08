@@ -1,5 +1,6 @@
 package com.example.A2_IS.controllers;
 
+import com.example.A2_IS.models.Professor;
 import com.example.A2_IS.models.Student;
 import com.example.A2_IS.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,9 @@ public class StudentController {
 
     @GetMapping
     public Flux<Student> getAllStudents(){return studentService.getStudents();}
+
+    @GetMapping("getAllStudentsWithProfessors")
+    public Flux<Student> getAllStudentsWithProfessors(){return studentService.getAllStudentsWithProfessors();}
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)

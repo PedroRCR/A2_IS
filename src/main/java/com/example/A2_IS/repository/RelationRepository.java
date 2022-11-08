@@ -6,4 +6,5 @@ import reactor.core.publisher.Flux;
 
 public interface RelationRepository extends ReactiveCrudRepository<Relation, Integer> {
     Flux<Relation> findByProfessorId(Integer professorId);
+    Flux<Relation> findByStudentId(Integer studentId);
 }
