@@ -34,6 +34,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public Flux<Student> getStudentsOrderByCredits(){
+        return studentRepository.findAllByOrderByCreditsAsc();
+    }
+
     public Flux<Student> getAllStudentsWithProfessors() {
         return studentRepository.findAll().flatMap(this::loadRelations);
     }
