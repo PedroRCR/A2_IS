@@ -40,11 +40,12 @@ public class StudentController {
 
     @GetMapping("/sortedStudentsByCredits")
     public Flux<Student> getStudentsByGraduationNotes(){
-        return studentService.getStudents()
-                .sort(Comparator.comparing(
-                                Student::getCredits
-                        )
-                );
+        return studentService.getStudentsOrderByCredits();
+    }
+
+    @GetMapping("/studentsGraduated")
+    public Flux<Student> getStudentsGraduated(){
+        return studentService.getStudentsGraduated();
     }
 
     @GetMapping("/sortedStudentsByAge")
