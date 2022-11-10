@@ -43,6 +43,11 @@ public class StudentController {
         return studentService.getStudentsOrderByCredits();
     }
 
+    @GetMapping("/studentsGraduated")
+    public Flux<Student> getStudentsGraduated(){
+        return studentService.getStudentsGraduated();
+    }
+
     @GetMapping("/sortedStudentsByAge")
     public Flux<Student> getStudentsByAge(){
         return studentService.getStudents()

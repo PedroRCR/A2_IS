@@ -7,4 +7,5 @@ import reactor.core.publisher.Flux;
 
 public interface StudentRepository extends ReactiveCrudRepository<Student, Integer> {
     Flux<Student> findAllByOrderByCreditsAsc();
+    Flux<Student> findByCreditsGreaterThanEqual(int credits);
 }

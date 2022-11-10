@@ -169,7 +169,7 @@ public class WebClientApp {
             PrintStream o = new PrintStream("Students.req7.txt");
 
             var students = client.get()
-                    .uri("/a2/student")
+                    .uri("/a2/student/studentsGraduated")
                     .retrieve()
                     .bodyToFlux(Student.class)
                     .filter(student -> student.getCredits() >= 180);

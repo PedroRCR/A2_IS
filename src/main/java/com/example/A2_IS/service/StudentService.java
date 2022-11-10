@@ -38,6 +38,10 @@ public class StudentService {
         return studentRepository.findAllByOrderByCreditsAsc();
     }
 
+    public Flux<Student> getStudentsGraduated(){
+        return studentRepository.findByCreditsGreaterThanEqual(180);
+    }
+
     public Flux<Student> getAllStudentsWithProfessors() {
         return studentRepository.findAll().flatMap(this::loadRelations);
     }
