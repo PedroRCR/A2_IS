@@ -12,7 +12,7 @@ import java.util.Comparator;
 public class WebClientApp {
     static WebClient client = WebClient.create("http://localhost:8080");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         WebClientApp obj = new WebClientApp();
         Class<?> classObj = obj.getClass();
 
@@ -62,9 +62,16 @@ public class WebClientApp {
                     .uri("/a2/student")
                     .retrieve()
                     .bodyToFlux(Student.class)
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 1 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .subscribe(student -> {
-                        o.println("\nName: " + student.getName() + "\t Date of Birth: " + student.getDob());
-                    });
+                o.println("\nName: " + student.getName() + "\t Date of Birth: " + student.getDob());
+            });
         } catch (Exception e) {
             System.out.println("REQ1 FUNCTION ERROR");
             e.printStackTrace();
@@ -80,6 +87,13 @@ public class WebClientApp {
                     .retrieve()
                     .bodyToFlux(Student.class)
                     .count()
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 2 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .block();
 
             o.println("\nTotal of Students: " + totalOfStudents);
@@ -99,6 +113,13 @@ public class WebClientApp {
                     .bodyToFlux(Student.class)
                     .map(s -> s.getCredits() < 180)
                     .count()
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 3 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .block();
 
             o.println("\nTotal number of students that are active: " + totalOfActiveStudents);
@@ -116,6 +137,13 @@ public class WebClientApp {
                     .uri("/a2/student")
                     .retrieve()
                     .bodyToFlux(Student.class)
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 4 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .subscribe(student -> {
                         int completedCouses = student.getCredits() / 6;
 
@@ -136,8 +164,15 @@ public class WebClientApp {
                     .uri("/a2/student/sortedStudentsByCredits")
                     .retrieve()
                     .bodyToFlux(Student.class)
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 5 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .subscribe(student -> {
-                        if (student.getCredits() > 120 && student.getCredits() < 180)
+                        if (student.getCredits() >= 120 && student.getCredits() < 180)
                             o.println("Student name: " + student.getName() + " -- credits: " + student.getCredits());
                     });
 
@@ -155,7 +190,14 @@ public class WebClientApp {
             var students = client.get()
                     .uri("/a2/student")
                     .retrieve()
-                    .bodyToFlux(Student.class);
+                    .bodyToFlux(Student.class)
+                    .onErrorMap((e) -> {
+                        System.out.println("*** THE REQUIREMENT 6 HAS FAILED *** --> " + e);
+                        return e;
+                    }
+            )
+                    .retry(3)
+                    .log();
 
             reqStandardAndAverageDeviation(students, o);
         } catch (Exception e) {
@@ -172,7 +214,14 @@ public class WebClientApp {
                     .uri("/a2/student")
                     .retrieve()
                     .bodyToFlux(Student.class)
-                    .filter(student -> student.getCredits() >= 180);
+                    .filter(student -> student.getCredits() >= 180)
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 7 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log();
 
             reqStandardAndAverageDeviation(students, o);
         } catch (Exception e) {
@@ -187,6 +236,13 @@ public class WebClientApp {
                     .uri("/a2/student/sortedStudentsByAge")
                     .retrieve()
                     .bodyToFlux(Student.class).take(1)
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 8 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .subscribe(
                             student -> o.println(student.getName() + " ---- " + student.getDob())
                     );
@@ -205,13 +261,20 @@ public class WebClientApp {
                     .retrieve()
                     .bodyToFlux(Student.class)
                     .collectList()
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 9 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .subscribe(students -> {
                         var sumOfStudentProfessors = students.stream().map(student -> student.getProfessors().size()).mapToInt(value -> value).sum();
                         o.println("Average # of professors per student: " + (sumOfStudentProfessors*1d/students.size()));
                     });
 
         } catch (Exception e) {
-            System.out.println("REQ10 FUNCTION ERROR");
+            System.out.println("REQ9 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
@@ -225,6 +288,13 @@ public class WebClientApp {
                     .retrieve()
                     .bodyToFlux(Professor.class)
                     .sort(Comparator.comparing(professor -> -professor.getStudents().size()))
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 10 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .subscribe(
                             professor -> o.println("Professor "+professor.getName()+"; Number of students: "+professor.getStudents().size())
                     );
@@ -242,11 +312,18 @@ public class WebClientApp {
                     .uri("/a2/student/getAllStudentsWithProfessors")
                     .retrieve()
                     .bodyToFlux(Student.class)
+                    .onErrorMap((e) -> {
+                                System.out.println("*** THE REQUIREMENT 11 HAS FAILED *** --> " + e);
+                                return e;
+                            }
+                    )
+                    .retry(3)
+                    .log()
                     .subscribe(
                             student -> o.println(student.toString())
                     );
         } catch (Exception e) {
-            System.out.println("REQ10 FUNCTION ERROR");
+            System.out.println("REQ11 FUNCTION ERROR");
             e.printStackTrace();
         }
     }
