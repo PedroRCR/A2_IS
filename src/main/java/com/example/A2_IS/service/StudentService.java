@@ -49,7 +49,7 @@ public class StudentService {
     public Mono<Student> saveStudent(Student student){return studentRepository.save(student);}
 
     public void deleteStudent(Integer id) {
-        studentRepository.deleteById(id).switchIfEmpty(Mono.error(new Exception("Student not found"))).subscribe();
+        studentRepository.deleteById(id).subscribe();
     }
 
 

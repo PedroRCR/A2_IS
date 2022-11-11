@@ -296,7 +296,7 @@ public class WebClientApp {
                     .retry(3)
                     .log()
                     .subscribe(
-                            professor -> o.println("Professor "+professor.getName()+"; Number of students: "+professor.getStudents().size())
+                            professor -> o.println("Professor "+professor.getName()+" -- Number of students: "+professor.getStudents().size())
                     );
         } catch (Exception e) {
             System.out.println("REQ10 FUNCTION ERROR");

@@ -31,8 +31,8 @@ public class ProfessorService {
        return professorRepository.save(professor);
     }
 
-    public void deleteProfessor(Integer id) {
-        professorRepository.deleteById(id).switchIfEmpty(Mono.error(new Exception("Professor not found"))).subscribe();
+        public void deleteProfessor(Integer id) {
+        professorRepository.deleteById(id).subscribe();
     }
 
     public Mono<Professor> loadRelations(final Professor professor) {
